@@ -1,5 +1,6 @@
 package com.kimbactran.magicpostbe.service.serviceimpl;
 
+import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.repository.UserRepository;
 import com.kimbactran.magicpostbe.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class UserServiceImpl implements UserService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-                return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                return userRepository.findByEmail(email).orElseThrow(() -> AppException.notFound("User not found"));
             }
         };
     }

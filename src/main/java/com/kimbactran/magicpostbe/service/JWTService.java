@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 public interface JWTService {
-    String generateToken(UserDetails userDetails);
+    String generateToken(User userDetails);
     String extractUsername(String token);
-    boolean isTokenValid(String token, UserDetails userDetails);
+    boolean isTokenValid(String token, User userDetails);
 
-    String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails);
+    String generateRefreshToken(Map<String, Object> extraClaims, User userDetails);
 }

@@ -1,5 +1,6 @@
 package com.kimbactran.magicpostbe.config;
 
+import com.kimbactran.magicpostbe.entity.User;
 import com.kimbactran.magicpostbe.service.JWTService;
 import com.kimbactran.magicpostbe.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
 
-            if(jwtService.isTokenValid(jwt, userDetails)) {
+            if(jwtService.isTokenValid(jwt, (User)userDetails)) {
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()

@@ -27,6 +27,11 @@ public class User implements UserDetails {
     private String phone;
     private UserRole role;
 
+    public User() {
+        super();
+        this.username = generateUsername(this.firstName, this.lastName, this.id);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()) );
@@ -50,5 +55,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String generateUsername(String firstName, String lastName,Long id) {
+        return firstName + lastName + id;
     }
 }

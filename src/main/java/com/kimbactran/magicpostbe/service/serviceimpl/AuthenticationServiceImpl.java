@@ -5,6 +5,7 @@ import com.kimbactran.magicpostbe.dto.RefreshTokenRequest;
 import com.kimbactran.magicpostbe.dto.SignInRequest;
 import com.kimbactran.magicpostbe.dto.SignUpRequest;
 import com.kimbactran.magicpostbe.entity.User;
+import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.repository.UserRepository;
 import com.kimbactran.magicpostbe.service.AuthenticationService;
 import com.kimbactran.magicpostbe.service.JWTService;
@@ -55,7 +56,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             jwtAuthenticationResponse.setToken(jwt);
             jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());
             return jwtAuthenticationResponse;
+        } else {
+            throw AppException.badRequest("Token invalid");
         }
-        return null;
     }
 }
