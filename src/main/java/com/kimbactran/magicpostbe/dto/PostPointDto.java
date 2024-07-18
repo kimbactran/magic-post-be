@@ -1,16 +1,10 @@
-package com.kimbactran.magicpostbe.entity;
+package com.kimbactran.magicpostbe.dto;
 
+import com.kimbactran.magicpostbe.entity.PointType;
 import lombok.Data;
 
-import javax.persistence.*;
-
 @Data
-@Entity
-@Table(name = "post_point")
-public class PostPoint {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class PostPointDto {
     private String pointCode;
     private String pointName;
     private String pointCountry;
@@ -22,5 +16,4 @@ public class PostPoint {
     private String pointEmail;
     private String pointPhone;
     private PointType pointType;
-    private Long pointLeaderId;
 }

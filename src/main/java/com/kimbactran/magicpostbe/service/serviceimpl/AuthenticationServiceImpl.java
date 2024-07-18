@@ -27,12 +27,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public User register(SignUpRequest signUpRequest) {
         User user = new User();
+        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+            throw new AppException("Email already exists");
+        }
         user.setFirstName(signUpRequest.getFirstName());
         user.setLastName(signUpRequest.getLastName());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         user.setRole(signUpRequest.getRole());
         user.setPhone(signUpRequest.getPhone());
+        user.setUsername(signUpRequest.getFirstName() + signUpRequest.getLastName());
         return userRepository.save(user);
     }
 
@@ -48,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        String userEmail = jwtService.extractUsername(refreshTokenRequest.getToken());
+        String userEmail = jwtService.extractEmail(refreshTokenRequest.getToken());
         User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("Invalid token"));
         if(jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
             var jwt = jwtService.generateToken(user);

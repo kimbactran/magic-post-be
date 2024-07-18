@@ -1,17 +1,25 @@
 package com.kimbactran.magicpostbe.service.serviceimpl;
 
+import com.kimbactran.magicpostbe.dto.UserDto;
+import com.kimbactran.magicpostbe.entity.PostPoint;
+import com.kimbactran.magicpostbe.entity.User;
 import com.kimbactran.magicpostbe.exception.AppException;
+import com.kimbactran.magicpostbe.repository.PostPointRepository;
 import com.kimbactran.magicpostbe.repository.UserRepository;
+import com.kimbactran.magicpostbe.service.PostPointService;
 import com.kimbactran.magicpostbe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final PostPointRepository postPointRepository;
 
     @Override
     public UserDetailsService userDetailsService() {
@@ -22,4 +30,28 @@ public class UserServiceImpl implements UserService {
             }
         };
     }
+
+    public User createUser(UserDto userDto) throws AppException {
+        if(userRepository.existsByEmail(userDto.getEmail())) {
+            throw AppException.badRequest("User already exists");
+        }
+        User user = new User();
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setRole(userDto.getRole());
+        user.setPhone(userDto.getPhone());
+        user.setUsername(userDto.getFirstName() + userDto.getLastName());
+        PostPoint postPoint = postPointRepository.findById(userDto.getPostPointId()).orElseThrow(() -> AppException.notFound("Post Point not found"));
+        user.setPostPointId(userDto.getPostPointId());
+        User savedUser = userRepository.save(user);
+        postPoint.setPointLeaderId(savedUser.getId());
+        return savedUser;
+    }
+
+
+
+
+
 }

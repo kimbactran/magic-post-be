@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface JWTService {
     String generateToken(User userDetails);
-    String extractUsername(String token);
+    String extractEmail(String token);
     boolean isTokenValid(String token, User userDetails);
 
     String generateRefreshToken(Map<String, Object> extraClaims, User userDetails);

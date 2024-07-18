@@ -56,6 +56,10 @@ public class AppException extends RuntimeException {
         return AppException.builder().code(String.valueOf(HttpStatus.BAD_REQUEST)).message(message).build();
     }
 
+    public static AppException dataExists(String message) {
+        return AppException.builder().code(String.valueOf(HttpStatus.CONFLICT)).message(message).build();
+    }
+
     public static AppException unAuthorized() {
         return AppException.builder().code(String.valueOf(HttpStatus.UNAUTHORIZED)).message("Not authorized").build();
     }

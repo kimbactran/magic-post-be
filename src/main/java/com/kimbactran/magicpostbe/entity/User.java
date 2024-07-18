@@ -26,11 +26,8 @@ public class User implements UserDetails {
     private String password;
     private String phone;
     private UserRole role;
+    private Long postPointId;
 
-    public User() {
-        super();
-        this.username = generateUsername(this.firstName, this.lastName, this.id);
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -57,7 +54,4 @@ public class User implements UserDetails {
         return true;
     }
 
-    public String generateUsername(String firstName, String lastName,Long id) {
-        return firstName + lastName + id;
-    }
 }

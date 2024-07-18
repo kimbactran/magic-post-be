@@ -45,12 +45,12 @@ public class JWTServiceImpl implements JWTService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String extractUsername(String token) {
+    public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     public boolean isTokenValid(String token, User userDetails) {
-        final String username = extractUsername(token);
+        final String username = extractEmail(token);
         return (username.equals(userDetails.getEmail()) && !isTokenExpired(token));
     }
 

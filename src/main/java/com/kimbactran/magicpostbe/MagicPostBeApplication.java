@@ -2,6 +2,7 @@ package com.kimbactran.magicpostbe;
 
 import com.kimbactran.magicpostbe.entity.User;
 import com.kimbactran.magicpostbe.entity.UserRole;
+import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,7 +21,7 @@ public class MagicPostBeApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		User adminAccount = userRepository.findByRole(UserRole.ADMIN);
+		User adminAccount = userRepository.findByRole(UserRole.ADMIN).orElseThrow(() -> new AppException("Can't not find admins account"));
 		if(adminAccount == null) {
 			User user = new User();
 			user.setEmail("admin@gmail.com");
