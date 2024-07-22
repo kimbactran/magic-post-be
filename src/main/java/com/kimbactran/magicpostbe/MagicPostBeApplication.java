@@ -21,7 +21,7 @@ public class MagicPostBeApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		User adminAccount = userRepository.findByRole(UserRole.ADMIN).orElseThrow(() -> new AppException("Can't not find admins account"));
+		User adminAccount = userRepository.findById(Long.valueOf(1)).orElseThrow(() -> new AppException("Can't not find admins account"));
 		if(adminAccount == null) {
 			User user = new User();
 			user.setEmail("admin@gmail.com");

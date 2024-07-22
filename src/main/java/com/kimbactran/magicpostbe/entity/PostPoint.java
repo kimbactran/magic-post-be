@@ -23,4 +23,5 @@ public class PostPoint {
     private String pointPhone;
     private PointType pointType;
     private Long pointLeaderId;
+    private Long pointGatherId;
 }

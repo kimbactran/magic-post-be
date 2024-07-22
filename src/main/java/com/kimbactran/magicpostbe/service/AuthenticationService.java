@@ -1,13 +1,16 @@
 package com.kimbactran.magicpostbe.service;
 
-import com.kimbactran.magicpostbe.dto.JwtAuthenticationResponse;
-import com.kimbactran.magicpostbe.dto.RefreshTokenRequest;
-import com.kimbactran.magicpostbe.dto.SignInRequest;
-import com.kimbactran.magicpostbe.dto.SignUpRequest;
+import com.kimbactran.magicpostbe.dto.*;
 import com.kimbactran.magicpostbe.entity.User;
+import com.kimbactran.magicpostbe.entity.UserRole;
+
+import java.util.List;
 
 public interface AuthenticationService {
     User register(SignUpRequest signUpRequest);
+    User createStaffAccount(StaffUserRequest staffUserRequest);
+    List<User> getUserByRole(UserRole userRole);
+    void deleteUser(Long userId);
     JwtAuthenticationResponse login(SignInRequest signInRequest);
     JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
 }

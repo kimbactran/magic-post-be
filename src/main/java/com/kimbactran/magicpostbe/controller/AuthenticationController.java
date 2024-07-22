@@ -1,23 +1,22 @@
 package com.kimbactran.magicpostbe.controller;
 
-import com.kimbactran.magicpostbe.dto.JwtAuthenticationResponse;
-import com.kimbactran.magicpostbe.dto.RefreshTokenRequest;
-import com.kimbactran.magicpostbe.dto.SignInRequest;
-import com.kimbactran.magicpostbe.dto.SignUpRequest;
+import com.kimbactran.magicpostbe.dto.*;
 import com.kimbactran.magicpostbe.entity.User;
+import com.kimbactran.magicpostbe.entity.UserRole;
 import com.kimbactran.magicpostbe.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody SignUpRequest signUpRequest) {
         return ResponseEntity.ok(authenticationService.register(signUpRequest));
@@ -31,5 +30,22 @@ public class AuthenticationController {
     @PostMapping("/refreshToken")
     public ResponseEntity<JwtAuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
+    }
+
+    @GetMapping("/getUserByRole")
+    public ResponseEntity<List<User>> getUserByRole(@RequestParam UserRole role) {
+        return ResponseEntity.ok(authenticationService.getUserByRole(role));
+    }
+
+    @PostMapping("/createStaffAccount")
+    public ResponseEntity<User> createStaffAccount(@RequestBody StaffUserRequest staffUserRequest) {
+        return ResponseEntity.ok(authenticationService.createStaffAccount(staffUserRequest));
+    }
+
+
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity<String> deleteUser(@RequestParam Long userId) {
+        authenticationService.deleteUser(userId);
+        return ResponseEntity.ok("Delete User Successfully!");
     }
 }

@@ -1,12 +1,17 @@
 package com.kimbactran.magicpostbe.service.serviceimpl;
 
 import com.kimbactran.magicpostbe.dto.PostPointDto;
+import com.kimbactran.magicpostbe.dto.PostPointPageResponse;
 import com.kimbactran.magicpostbe.entity.PointType;
 import com.kimbactran.magicpostbe.entity.PostPoint;
 import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.repository.PostPointRepository;
 import com.kimbactran.magicpostbe.repository.UserRepository;
 import com.kimbactran.magicpostbe.service.PostPointService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -82,6 +87,21 @@ public class PostPointServiceImpl implements PostPointService {
         } else {
             throw AppException.notFound("User was not found!");
         }
+    }
+
+    public PostPointPageResponse getAllPostPointsWithPagination(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<PostPoint> postPointPages = postPointRepository.findAll(pageable);
+        List<PostPoint> postPoints = postPointPages.getContent();
+        return new PostPointPageResponse(postPoints, pageNumber, pageSize, (int) postPointPages.getTotalElements(),postPointPages.getTotalPages(), postPointPages.isLast());
+    }
+
+    public PostPointPageResponse getAllPostPointsWithPaginationAndSorting(Integer pageNumber, Integer pageSize, String sortBy, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<PostPoint> postPointPages = postPointRepository.findAll(pageable);
+        List<PostPoint> postPoints = postPointPages.getContent();
+        return new PostPointPageResponse(postPoints, pageNumber, pageSize, (int) postPointPages.getTotalElements(),postPointPages.getTotalPages(),postPointPages.isLast());
     }
 
 }
