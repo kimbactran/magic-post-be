@@ -1,47 +1,36 @@
 package com.kimbactran.magicpostbe.dto;
 
 import com.kimbactran.magicpostbe.entity.OrderInfo;
+import com.kimbactran.magicpostbe.entity.OrderStatus;
 import com.kimbactran.magicpostbe.entity.OrderType;
+import com.kimbactran.magicpostbe.entity.UserPayment;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
-
+@Data
+@RequiredArgsConstructor
 public class OderRequest {
 
-    private String firstNameSender;
-    private String lastNameSender;
-    private String phoneSender;
-    private String customerCountrySender;
-    private String customerProvinceSender;
-    private String customerDistrictSender;
-    private String customerCommuneSender;
-    private String customerDetailAddressSender;
-    private String pointCodeSender;
-    private String userReceiverIdSender;
+    private Long orderCustomerId;
 
     private String firstNameReceiver;
     private String lastNameReceiver;
-    private String emailReceiver;
     private String phoneReceiver;
-    private String customerCountryReceiver;
-    private String customerProvinceReceiver;
-    private String customerDistrictReceiver;
-    private String customerCommuneReceiver;
-    private String customerDetailAddressReceiver;
+    private String countryReceiver;
+    private String provinceReceiver;
+    private String districtReceiver;
+    private String communeReceiver;
+    private String detailAddressReceiver;
     private String pointCodeReceiver;
-    private String userReceiverIdSReceiver;
 
     private OrderType orderType;
 
     // So tien hang gui
     private String orderValue;
     private String additionalService;
-    private String orderStatus;
     private String orderWeight;
     private UserPayment userPayment;
-    private enum UserPayment {
-        SENDER, RECEIVER
-    }
-
     private String orderDescription;
     private String mainCharge;
     private String surCharge;

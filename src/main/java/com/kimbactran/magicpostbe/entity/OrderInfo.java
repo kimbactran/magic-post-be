@@ -10,13 +10,15 @@ import java.util.Date;
 public class OrderInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "order_code", updatable = false, nullable = false)
     private String orderCode;
 
-    private String userSendId;
-    private String userReceiverId;
+    private Long createUser;
+    private Long orderCustomerId;
+    private Long userSendId;
+    private Long userReceiverId;
 
     private OrderType orderType;
 
@@ -24,28 +26,24 @@ public class OrderInfo {
     private String additionalService;
     private Date orderDate = new Date();
     private Date dateReceived;
-    private String orderStatus;
+    private OrderStatus orderStatus;
     private String orderWeight;
     private UserPayment userPayment;
-    private enum UserPayment {
-        SENDER, RECEIVER
-    }
-
     private String orderDescription;
     private String cancellationReason;
     private String mainCharge;
     private String surCharge;
     private String totalCharge;
 
-    private String transactionPointSender;
-    private String gatherPointSender;
-    private String transactionPointReceiver;
-    private String gatherPointReceiver;
+    private Long transactionPointSender;
+    private Long gatherPointSender;
+    private Long transactionPointReceiver;
+    private Long gatherPointReceiver;
 
-    private String currentPoint;
+    private Long currentPoint;
     // 1. Tiep nhan
     // 2. Cho tiep nhan
-    private String statusPointOrder;
+    private StatusPointOrder statusPointOrder;
     @PrePersist
     public void generateOrderCode() {
         this.orderCode = "ORDERMGP" + this.id;

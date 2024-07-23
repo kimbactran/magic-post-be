@@ -14,7 +14,7 @@ import javax.persistence.Id;
 public class Sender {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long senderId;
+    private Long senderId;
     private String firstName;
     private String lastName;
     private String phone;

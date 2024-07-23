@@ -21,6 +21,7 @@ public class User implements UserDetails {
     private Long id;
     private String firstName;
     private String lastName;
+    @Column(name = "username", updatable = false, nullable = false)
     private String username;
     private String email;
     private String password;
@@ -54,4 +55,8 @@ public class User implements UserDetails {
         return true;
     }
 
+    @PrePersist
+    public void generateUsername() {
+        this.username = this.firstName + this.lastName + this.id;
+    }
 }

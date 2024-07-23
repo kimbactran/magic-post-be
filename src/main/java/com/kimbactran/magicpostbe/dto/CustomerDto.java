@@ -1,5 +1,10 @@
 package com.kimbactran.magicpostbe.dto;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class CustomerDto {
     private String firstName;
     private String lastName;

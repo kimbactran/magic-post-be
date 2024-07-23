@@ -9,6 +9,7 @@ import com.kimbactran.magicpostbe.repository.PostPointRepository;
 import com.kimbactran.magicpostbe.repository.UserRepository;
 import com.kimbactran.magicpostbe.service.AuthenticationService;
 import com.kimbactran.magicpostbe.service.JWTService;
+import com.kimbactran.magicpostbe.utils.AuthenticationFunction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,30 +23,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepository;
+    private final AuthenticationFunction authenticationFunction;
     private final PostPointRepository postPointRepository;
 
 
     public User register(SignUpRequest signUpRequest) {
-        User user = new User();
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new AppException("Email already exists");
-        }
-        user.setFirstName(signUpRequest.getFirstName());
-        user.setLastName(signUpRequest.getLastName());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-        user.setRole(signUpRequest.getRole());
-        user.setPhone(signUpRequest.getPhone());
-        user.setUsername(signUpRequest.getFirstName() + signUpRequest.getLastName());
-        PostPoint postPoint = postPointRepository.findById(signUpRequest.getPostPointId()).orElseThrow(() -> AppException.notFound("Post Point not found"));
-        user.setPostPointId(signUpRequest.getPostPointId());
-        User savedUser = userRepository.save(user);
-        postPoint.setPointLeaderId(savedUser.getId());
-        return savedUser;
+        return authenticationFunction.createUser(signUpRequest);
     }
 
     public User createStaffAccount(StaffUserRequest staffUserRequest) {
