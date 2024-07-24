@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReceiverRepository extends JpaRepository<Receiver, Long> {
 
-    boolean exitsByPhone(String phoneReceiver);
+    boolean existsByPhone(String phoneReceiver);
     Receiver findByPhone(String phoneReceiver);
 }

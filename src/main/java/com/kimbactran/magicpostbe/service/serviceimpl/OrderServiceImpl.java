@@ -17,12 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final ReceiverRepository receiverRepository;
-    private OrderRepository orderRepository;
-    private CustomerRepository customerRepository;
-    private SenderRepository senderRepository;
-    private UserRepository userRepository;
-    private PostPointRepository postPointRepository;
-    private FindPostPointByAddress findPostPointByAddress;
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
+    private final SenderRepository senderRepository;
+    private final UserRepository userRepository;
+    private final PostPointRepository postPointRepository;
+    private final FindPostPointByAddress findPostPointByAddress;
 
     public OrderInfo createOrder(OderRequest orderRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
         Sender sender = senderRepository.findByPhone(customer.getPhone()).orElseThrow(() -> new AppException("Sender not found"));
         orderInfo.setUserSendId(sender.getSenderId());
 
-        if(receiverRepository.exitsByPhone(orderRequest.getPhoneReceiver())){
+        if(receiverRepository.existsByPhone(orderRequest.getPhoneReceiver())){
             Receiver receiver = receiverRepository.findByPhone(orderRequest.getPhoneReceiver());
             orderInfo.setUserReceiverId(receiver.getReceiverId());
         } else {
@@ -88,5 +88,9 @@ public class OrderServiceImpl implements OrderService {
 
     public List<OrderInfo> getTotalOrderByOrderPointId(Long postPointId){
         return orderRepository.findByCurrentPoint(postPointId);
+    }
+
+    public List<OrderInfo> getAllOrder() {
+        return orderRepository.findAll();
     }
 }
