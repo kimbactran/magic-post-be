@@ -14,8 +14,8 @@ import java.nio.file.Path;
 @Component
 public class GenerateQrCode {
     public void generateQrCode(OrderInfo orderInfo) throws WriterException, IOException {
-        String qrCodePath = "C:\\QrCodeImg";
-        String qrCodeName = qrCodePath+ orderInfo.getId() + ".png";
+        String qrCodePath = "E:\\magic-post-be\\src\\main\\resources\\QrCodeImg";
+        String qrCodeName = qrCodePath + orderInfo.getId() + ".png";
         var qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode("Order Id: "+ orderInfo.getId() + "\n"
                 + "Order Customer Id: " + orderInfo.getOrderCustomerId()+ "\n"
@@ -25,12 +25,12 @@ public class GenerateQrCode {
                 + "Order Type: " + orderInfo.getOrderType() + "\n"
                 + "Order Value" + orderInfo.getOrderValue() + "\n",
                 BarcodeFormat.QR_CODE, 400, 400);
-        Path path = FileSystems.getDefault().getPath(qrCodePath);
+        Path path = FileSystems.getDefault().getPath(qrCodeName);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
     }
 
     public void generateQrCodeExample() throws WriterException, IOException {
-        String qrCodePath = "C:\\QrCodeImg";
+        String qrCodePath = "E:\\magic-post-be\\src\\main\\resources\\QrCodeImg";
         String qrCodeName = qrCodePath + "example.png";
         var qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode("Order Id: "+  "\n"
@@ -41,7 +41,7 @@ public class GenerateQrCode {
                         + "Order Type: " + "\n"
                         + "Order Value"  + "\n",
                 BarcodeFormat.QR_CODE, 400, 400);
-        Path path = FileSystems.getDefault().getPath(qrCodePath);
+        Path path = FileSystems.getDefault().getPath(qrCodeName);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
     }
 }

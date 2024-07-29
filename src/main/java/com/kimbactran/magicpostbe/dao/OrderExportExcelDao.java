@@ -1,52 +1,49 @@
-package com.kimbactran.magicpostbe.entity;
+package com.kimbactran.magicpostbe.dao;
 
+import com.kimbactran.magicpostbe.entity.*;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import java.util.Date;
 
-@Entity
 @Data
-public class OrderInfo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "order_code", updatable = false, nullable = false)
+public class OrderExportExcelDao {
     private String orderCode;
 
     private Long createUser;
+    private String createUserName;
     private Long orderCustomerId;
+    private String orderCustomerCode;
     private Long userSendId;
+    private String userSenderName;
+    private String userSenderPhoneNumber;
+    private String userSenderAddress;
     private Long userReceiverId;
+    private String userReceiverName;
+    private String userReceiverPhoneNumber;
+    private String userReceiverAddress;
 
     private OrderType orderType;
 
     private String orderValue;
     private String additionalService;
-    private Date orderDate = new Date();
-    private Date dateReceived;
-    private OrderStatus orderStatus;
+    private Date orderDate;
+    private SenderInstructions senderInstructions;
     private String orderWeight;
-    private UserPayment userPayment;
     private String orderDescription;
-    private String cancellationReason;
     private String mainCharge;
     private String surCharge;
     private String totalCharge;
 
     private Long transactionPointSender;
+    private String transactionPointSenderName;
     private Long gatherPointSender;
     private Long transactionPointReceiver;
+    private String transactionPointReceiverName;
     private Long gatherPointReceiver;
-    private SenderInstructions senderInstructions;
 
     private Long currentPoint;
     // 1. Tiep nhan
     // 2. Cho tiep nhan
     private StatusPointOrder statusPointOrder;
-    @PrePersist
-    public void generateOrderCode() {
-        this.orderCode = "ORDERMGP" + this.id;
-    }
 }

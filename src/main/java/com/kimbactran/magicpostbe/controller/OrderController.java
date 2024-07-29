@@ -21,8 +21,9 @@ public class OrderController {
 
     @GetMapping("/allOrder")
     public List<OrderInfo> getAllOrder() throws IOException, WriterException {
-        generateQrCode.generateQrCodeExample();
         return orderService.getAllOrder();
     }
+
+
 
 }

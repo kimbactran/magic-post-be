@@ -1,16 +1,21 @@
 package com.kimbactran.magicpostbe.service.serviceimpl;
 
+import com.google.zxing.WriterException;
+import com.kimbactran.magicpostbe.dao.OrderExportExcelDao;
 import com.kimbactran.magicpostbe.dto.OderRequest;
 import com.kimbactran.magicpostbe.entity.*;
 import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.repository.*;
 import com.kimbactran.magicpostbe.service.OrderService;
 import com.kimbactran.magicpostbe.utils.FindPostPointByAddress;
+import com.kimbactran.magicpostbe.utils.GenerateQrCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,6 +28,8 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final PostPointRepository postPointRepository;
     private final FindPostPointByAddress findPostPointByAddress;
+    private final GenerateQrCode generateQrCode;
+
 
     public OrderInfo createOrder(OderRequest orderRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -92,5 +99,14 @@ public class OrderServiceImpl implements OrderService {
 
     public List<OrderInfo> getAllOrder() {
         return orderRepository.findAll();
+    }
+
+    public ResponseEntity<?> exportPdfOrder(OrderInfo orderInfo) throws IOException, WriterException {
+        generateQrCode.generateQrCode(orderInfo);
+
+    }
+
+    private OrderExportExcelDao convertToDao(OrderInfo orderInfo) {
+        return mapHelper
     }
 }
