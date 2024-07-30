@@ -24,4 +24,12 @@ public class Sender {
     private String senderCommune;
     private String senderDetailAddress;
     private String pointCode;
+
+    public String getFullName(){
+        return this.firstName + " " + this.lastName;
+    }
+
+    public String getAddress(){
+        return this.senderDetailAddress + " - " + this.senderCommune + this.senderDistrict + " - " + this.senderProvince + " - " + this.senderCountry;
+    }
 }

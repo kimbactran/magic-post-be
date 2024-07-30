@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Data
 public class OrderExportExcelDao {
+    private Long id;
     private String orderCode;
 
     private Long createUser;
@@ -42,8 +43,4 @@ public class OrderExportExcelDao {
     private String transactionPointReceiverName;
     private Long gatherPointReceiver;
 
-    private Long currentPoint;
-    // 1. Tiep nhan
-    // 2. Cho tiep nhan
-    private StatusPointOrder statusPointOrder;
 }

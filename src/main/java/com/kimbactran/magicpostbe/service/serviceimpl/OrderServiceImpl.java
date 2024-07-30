@@ -5,17 +5,27 @@ import com.kimbactran.magicpostbe.dao.OrderExportExcelDao;
 import com.kimbactran.magicpostbe.dto.OderRequest;
 import com.kimbactran.magicpostbe.entity.*;
 import com.kimbactran.magicpostbe.exception.AppException;
+import com.kimbactran.magicpostbe.mapper.MappingHelper;
 import com.kimbactran.magicpostbe.repository.*;
 import com.kimbactran.magicpostbe.service.OrderService;
+import com.kimbactran.magicpostbe.utils.ExcelHandler;
 import com.kimbactran.magicpostbe.utils.FindPostPointByAddress;
 import com.kimbactran.magicpostbe.utils.GenerateQrCode;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -29,6 +39,8 @@ public class OrderServiceImpl implements OrderService {
     private final PostPointRepository postPointRepository;
     private final FindPostPointByAddress findPostPointByAddress;
     private final GenerateQrCode generateQrCode;
+    private final MappingHelper mappingHelper;
+    private final ExcelHandler excelHandler;
 
 
     public OrderInfo createOrder(OderRequest orderRequest) {
@@ -102,11 +114,62 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public ResponseEntity<?> exportPdfOrder(OrderInfo orderInfo) throws IOException, WriterException {
-        generateQrCode.generateQrCode(orderInfo);
+        OrderExportExcelDao orderExportExcelDao = convertToDao(orderInfo);
+        generateQrCode.generateQrCode(orderExportExcelDao);
+        String imgPath = "D:\\QRImg\\" + orderInfo.getId() + ".png";
+        XSSFWorkbook workbook = excelHandler.exportExcelOrder(imgPath, orderExportExcelDao);
+        return export(workbook, String.valueOf(orderInfo.getId()));
+    }
 
+    public ResponseEntity<?> exportPdfOrderEx() throws IOException, WriterException {
+        generateQrCode.generateQrCodeExample();
+        String imgPath = "D:\\QRImg\\" + "example.png";
+        XSSFWorkbook workbook = excelHandler.exportExcelOrderEx(imgPath);
+        return export(workbook, "example");
     }
 
     private OrderExportExcelDao convertToDao(OrderInfo orderInfo) {
-        return mapHelper
+        OrderExportExcelDao orderExportExcelDao = mappingHelper.map(orderInfo, OrderExportExcelDao.class);
+        Sender sender = senderRepository.findById(orderInfo.getUserSendId()).orElseThrow(() -> new AppException("Sender not found"));
+        orderExportExcelDao.setUserSenderName(sender.getFullName());
+        orderExportExcelDao.setUserSenderAddress(sender.getAddress());
+        orderExportExcelDao.setUserSenderPhoneNumber(sender.getPhone());
+
+        Receiver receiver = receiverRepository.findById(orderInfo.getUserReceiverId()).orElseThrow(() -> new AppException("Receiver not found"));
+        orderExportExcelDao.setUserSenderName(receiver.getFullName());
+        orderExportExcelDao.setUserSenderAddress(receiver.getAddress());
+        orderExportExcelDao.setUserSenderPhoneNumber(receiver.getPhone());
+
+        PostPoint transactionPointSender = postPointRepository.findById(orderInfo.getTransactionPointSender()).orElseThrow(() -> new AppException("TransactionPointSender not found"));
+        orderExportExcelDao.setTransactionPointSenderName(transactionPointSender.getPointName());
+
+        PostPoint transactionPointReceiver = postPointRepository.findById(orderInfo.getTransactionPointReceiver()).orElseThrow(() -> new AppException("TransactionPointReceiver not found"));
+        orderExportExcelDao.setTransactionPointReceiverName(transactionPointReceiver.getPointName());
+
+        return orderExportExcelDao;
+    }
+
+    public static ResponseEntity<?> export(XSSFWorkbook newWorkbook, String fileName) {
+        List<String> allows = Arrays.asList("code", "message");
+        HttpHeaders header;
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            header = new HttpHeaders();
+            header.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+            header.set("Content-disposition", "attachment; filename=" + fileName);
+            header.set("message", "Success");
+            header.set("code", "200");
+            header.setAccessControlExposeHeaders(allows);
+            newWorkbook.write(stream);
+            newWorkbook.close();
+            return new ResponseEntity<>(new ByteArrayResource(stream.toByteArray()), header, HttpStatus.CREATED);
+        } catch (IOException e) {
+            e.printStackTrace();
+            header = new HttpHeaders();
+            header.set("message", "Failed");
+            header.set("code", "400");
+            header.setAccessControlExposeHeaders(allows);
+            return ResponseEntity.ok("Success");
+        }
     }
 }

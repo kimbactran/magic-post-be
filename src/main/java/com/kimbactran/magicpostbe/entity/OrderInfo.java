@@ -1,12 +1,19 @@
 package com.kimbactran.magicpostbe.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class OrderInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

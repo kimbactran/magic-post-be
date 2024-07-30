@@ -25,4 +25,12 @@ public class Receiver {
     private String receiverCommune;
     private String receiverDetailAddress;
     private String pointCode;
+
+    public String getFullName(){
+        return this.firstName + " " + this.lastName;
+    }
+
+    public String getAddress(){
+        return this.receiverDetailAddress + " - " + this.receiverCommune + this.receiverDistrict + " - " + this.receiverProvince + " - " + this.receiverCountry;
+    }
 }
