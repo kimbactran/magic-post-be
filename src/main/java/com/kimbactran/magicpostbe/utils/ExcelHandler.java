@@ -76,18 +76,23 @@ public class ExcelHandler {
                     CreationHelper createHelper = newWorkbook.getCreationHelper();
                     Drawing<?> drawing = sheet.createDrawingPatriarch();
                     ClientAnchor anchor = createHelper.createClientAnchor();
-                    anchor.setCol1(cell.getColumnIndex());
+                    anchor.setCol1(1);
+                    anchor.setCol2(2);
                     anchor.setRow1(rowNum);
+                    anchor.setRow2(rowNum + 1);
                     drawing.createPicture(anchor, pictureIndex);
                 } else {
                 cell.setCellValue("Kim bacws tran" + rowNum);
             }
 
         }
-
+        try (FileOutputStream outputStream = new FileOutputStream("C:\\magic-post-be\\src\\main\\resources\\Order\\export.xlsx")) {
+            newWorkbook.write(outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return newWorkbook;
     }
-
 
     private byte[] convertImgToByteArray(String imgFilePath) throws IOException {
         // Load Qr Img code

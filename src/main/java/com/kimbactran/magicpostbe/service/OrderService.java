@@ -1,6 +1,7 @@
 package com.kimbactran.magicpostbe.service;
 
 import com.google.zxing.WriterException;
+import com.itextpdf.text.DocumentException;
 import com.kimbactran.magicpostbe.dto.OderRequest;
 import com.kimbactran.magicpostbe.entity.OrderInfo;
 import com.kimbactran.magicpostbe.entity.OrderStatus;
@@ -16,5 +17,5 @@ public interface OrderService {
     List<OrderInfo> getTotalOrderByOrderPointId(Long postPointId);
     List<OrderInfo> getAllOrder();
     ResponseEntity<?> exportPdfOrder(OrderInfo orderInfo) throws IOException, WriterException;
-    ResponseEntity<?> exportPdfOrderEx() throws IOException, WriterException;
+    ResponseEntity<?> exportPdfOrderEx() throws IOException, WriterException, DocumentException;
 }

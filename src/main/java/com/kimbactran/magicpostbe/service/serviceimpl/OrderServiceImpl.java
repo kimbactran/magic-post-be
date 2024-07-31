@@ -1,8 +1,10 @@
 package com.kimbactran.magicpostbe.service.serviceimpl;
 
 import com.google.zxing.WriterException;
+import com.itextpdf.text.DocumentException;
 import com.kimbactran.magicpostbe.dao.OrderExportExcelDao;
 import com.kimbactran.magicpostbe.dto.OderRequest;
+import com.kimbactran.magicpostbe.dto.Response;
 import com.kimbactran.magicpostbe.entity.*;
 import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.mapper.MappingHelper;
@@ -11,6 +13,7 @@ import com.kimbactran.magicpostbe.service.OrderService;
 import com.kimbactran.magicpostbe.utils.ExcelHandler;
 import com.kimbactran.magicpostbe.utils.FindPostPointByAddress;
 import com.kimbactran.magicpostbe.utils.GenerateQrCode;
+import com.kimbactran.magicpostbe.utils.PdfHandler;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -41,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
     private final GenerateQrCode generateQrCode;
     private final MappingHelper mappingHelper;
     private final ExcelHandler excelHandler;
+    private final PdfHandler pdfHandler;
 
 
     public OrderInfo createOrder(OderRequest orderRequest) {
@@ -121,11 +125,17 @@ public class OrderServiceImpl implements OrderService {
         return export(workbook, String.valueOf(orderInfo.getId()));
     }
 
-    public ResponseEntity<?> exportPdfOrderEx() throws IOException, WriterException {
-        generateQrCode.generateQrCodeExample();
-        String imgPath = "D:\\QRImg\\" + "example.png";
-        XSSFWorkbook workbook = excelHandler.exportExcelOrderEx(imgPath);
-        return export(workbook, "example");
+    public ResponseEntity<?> exportPdfOrderEx() throws IOException, WriterException, DocumentException {
+//        generateQrCode.generateQrCodeExample();
+//        String imgPath = "D:\\QRImg\\" + "example.png";
+//        XSSFWorkbook workbook = excelHandler.exportExcelOrderEx(imgPath);
+//        pdfHandler.convertExcelToPdf(workbook);
+        //pdfHandler.exportToPdf();
+
+        pdfHandler.convertExcelToPdfV2();
+
+//        return export(workbook, "example");
+        return ResponseEntity.ok("Success");
     }
 
     private OrderExportExcelDao convertToDao(OrderInfo orderInfo) {
