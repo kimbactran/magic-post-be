@@ -125,15 +125,16 @@ public class OrderServiceImpl implements OrderService {
         return export(workbook, String.valueOf(orderInfo.getId()));
     }
 
-    public ResponseEntity<?> exportPdfOrderEx() throws IOException, WriterException, DocumentException {
+    public ResponseEntity<?> exportPdfOrderEx() throws Exception {
 //        generateQrCode.generateQrCodeExample();
 //        String imgPath = "D:\\QRImg\\" + "example.png";
 //        XSSFWorkbook workbook = excelHandler.exportExcelOrderEx(imgPath);
-//        pdfHandler.convertExcelToPdf(workbook);
-        //pdfHandler.exportToPdf();
+//        pdfHandler.convertExcelToPdf();
+//        pdfHandler.exportToPdf();
 
-        pdfHandler.convertExcelToPdfV2();
-
+//        pdfHandler.convertExcelToPdfV2();
+        pdfHandler.exportPdfFinal();
+//        pdfHandler.exportPdfFinal();
 //        return export(workbook, "example");
         return ResponseEntity.ok("Success");
     }

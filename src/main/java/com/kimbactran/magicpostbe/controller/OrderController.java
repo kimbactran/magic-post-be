@@ -28,7 +28,7 @@ public class OrderController {
 
 
     @GetMapping("/getExcelOrder")
-    public ResponseEntity<?> getExcelOrder() throws IOException, WriterException, DocumentException {
+    public ResponseEntity<?> getExcelOrder() throws Exception {
         return orderService.exportPdfOrderEx();
     }
 

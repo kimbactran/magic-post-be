@@ -1,23 +1,22 @@
 package com.kimbactran.magicpostbe.utils;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
-import com.kimbactran.magicpostbe.entity.OrderInfo;
 import com.spire.xls.Worksheet;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.spire.xls.Workbook;
 
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.FileTemplateResolver;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import javax.swing.event.DocumentListener;
-import javax.swing.event.UndoableEditListener;
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,36 +25,36 @@ import java.util.List;
 
 @Component
 public class PdfHandler {
-    public void convertExcelToPdf(XSSFWorkbook workbook) {
+    public void convertExcelToPdf() {
         try {
-//            XSSFSheet sheet = workbook.getSheetAt(0);
+            FileInputStream inputStream = new FileInputStream("C:\\magic-post-be\\src\\main\\resources\\Order\\export.xlsx");
+            XSSFWorkbook workbookStatic = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = workbookStatic.getSheetAt(0);
             Document document = new Document(PageSize.A4);
             FileOutputStream fos = new FileOutputStream("D:\\QRImg\\exTitlample.pdf");
             PdfWriter writer = PdfWriter.getInstance(document, fos);
             document.open();
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            workbookStatic.write(stream);
+            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(stream.toByteArray()));
+
             Image img = Image.getInstance("D:\\QRImg\\example.png");
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            workbook.write(baos);
-            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(baos.toByteArray()));
+            document.newPage();
             document.add(img);
-
-
-
-            workbook.close();
             document.close();
+            workbookStatic.close();
         } catch (DocumentException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void convertExcelToPdfV2() {
-        //            XSSFSheet sheet = workbook.getSheetAt(0);
-        Document document = new Document(PageSize.A4);
+    public void convertExcelToPdfV2() throws IOException, DocumentException {
+//                    XSSFSheet sheet = workbook.getSheetAt(0);
         Workbook workbook = new Workbook();
         workbook.loadFromFile("C:\\magic-post-be\\src\\main\\resources\\Order\\export.xlsx");
 
-        workbook.getConverterSetting().setSheetFitToWidth(true);
+        workbook.getConverterSetting().setSheetFitToPage(true);
 
         //Get the first worksheet
         Worksheet worksheet = workbook.getWorksheets().get(0);
@@ -63,8 +62,29 @@ public class PdfHandler {
         //Convert to PDF and save the resulting document to a specified path
         worksheet.saveToPdf("C:\\magic-post-be\\src\\main\\resources\\Order\\WorksheetToPdf.pdf");
 
-    }
 
+        FileOutputStream fos = new FileOutputStream("D:\\QRImg\\example.pdf");
+        PdfReader reader = new PdfReader("C:\\magic-post-be\\src\\main\\resources\\Order\\WorksheetToPdf.pdf");
+        PdfStamper stamper = new PdfStamper(reader,fos);
+//        stamper.add
+//        Image img = Image.getInstance("D:\\QRImg\\example.png");
+//        img.scaleToFit(50, 50);
+//        document.add(img);
+//        document.close();
+
+        Image image = Image.getInstance("D:\\QRImg\\example.png");
+        PdfImage stream = new PdfImage(image, "", null);
+        stream.put(new PdfName("ITXT_SpecialId"), new PdfName("123456789"));
+        PdfIndirectObject ref = stamper.getWriter().addToBody(stream);
+        image.scaleToFit(90, 90);
+        image.setDirectReference(ref.getIndirectReference());
+        image.setAbsolutePosition(700, 500);
+        PdfContentByte over = stamper.getOverContent(1);
+        over.addImage(image);
+        stamper.close();
+        reader.close();
+
+    }
 
     public void exportToPdf() throws IOException, DocumentException {
         FileInputStream inputStream = new FileInputStream("C:\\magic-post-be\\src\\main\\resources\\Order\\export.xlsx");
@@ -77,11 +97,9 @@ public class PdfHandler {
         Iterator<Row> rowIterator = worksheet.iterator();
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
-            if (row.getRowNum() == 0) {
-                continue;
-            }
-            for (int i = 0; i < row.getPhysicalNumberOfCells(); i++) {
-                Cell cell = row.getCell(i);
+            Iterator<Cell> cellIterator = row.cellIterator();
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
                 String cellValue;
                 switch (cell.getCellType()) {
                     case STRING:
@@ -103,6 +121,17 @@ public class PdfHandler {
         document.close();
         workbook.close();
     }
+
+
+    private static void addPDFData(List<String> list, PdfPTable table) {
+        list
+                .forEach(column -> {
+                    PdfPCell header = new PdfPCell();
+                    header.setPhrase(new Phrase(column));
+                    table.addCell(header);
+                });
+    }
+
 
     public static List<String> getRow(int index, Sheet sheet) {
         List<String> list = new ArrayList<>();
@@ -126,5 +155,52 @@ public class PdfHandler {
 
         return list;
     }
+
+//    public void exportPdfFinal() throws Exception {
+//        // Create Workbook to load Excel file
+//        com.aspose.cells.Workbook workbook = new com.aspose.cells.Workbook("C:\\magic-post-be\\src\\main\\resources\\Order\\export.xlsx");
+//
+//        // Save the document in PDF format
+//        PdfSaveOptions options = new PdfSaveOptions();
+//
+//        // To render sheet2 only
+//        options.setPageIndex(0);
+//        options.setPageCount(0);
+//        workbook.save("D:\\QRImg\\Excel-to-PDF.pdf", SaveFormat.PDF);
+//    }
+
+
+    public void exportPdfFinal() throws Exception {
+//        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+//        templateResolver.setSuffix("D:\\QRImg\\MagicPostOrderTemplate.html");
+//        templateResolver.setTemplateMode("HTML");
+//
+//        TemplateEngine templateEngine = new TemplateEngine();
+//        templateEngine.setTemplateResolver(templateResolver);
+
+
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setCharacterEncoding("UTF-8");
+
+        TemplateEngine templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+
+        Context context = new Context();
+// Gán giá trị "Thomas" cho biến name để lát nữa bind dữ liệu
+        context.setVariable("name", "Thomas");
+// Trả về chuỗi là html string sau khi thực hiện bind dữ liệu
+        String html = templateEngine.process("MagicPostOrderTemplate", context);
+
+        OutputStream outputStream = new FileOutputStream("D:\\QRImg\\message.pdf");
+        ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(html);
+        renderer.layout();
+        renderer.createPDF(outputStream);
+        outputStream.close();
+    }
+
+
 
 }

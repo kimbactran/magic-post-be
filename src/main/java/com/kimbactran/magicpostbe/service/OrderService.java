@@ -17,5 +17,5 @@ public interface OrderService {
     List<OrderInfo> getTotalOrderByOrderPointId(Long postPointId);
     List<OrderInfo> getAllOrder();
     ResponseEntity<?> exportPdfOrder(OrderInfo orderInfo) throws IOException, WriterException;
-    ResponseEntity<?> exportPdfOrderEx() throws IOException, WriterException, DocumentException;
+    ResponseEntity<?> exportPdfOrderEx() throws Exception;
 }
