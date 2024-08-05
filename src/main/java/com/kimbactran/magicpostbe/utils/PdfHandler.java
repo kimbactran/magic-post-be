@@ -3,22 +3,25 @@ package com.kimbactran.magicpostbe.utils;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.spire.xls.Worksheet;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.spire.xls.Workbook;
 
+import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-import org.thymeleaf.templateresolver.FileTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -170,7 +173,7 @@ public class PdfHandler {
 //    }
 
 
-    public void exportPdfFinal() throws Exception {
+    public ByteArrayInputStream exportPdfFinal() throws Exception {
 //        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 //        templateResolver.setSuffix("D:\\QRImg\\MagicPostOrderTemplate.html");
 //        templateResolver.setTemplateMode("HTML");
@@ -182,25 +185,45 @@ public class PdfHandler {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCharacterEncoding("UTF-8");
 
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
 
         Context context = new Context();
-// Gán giá trị "Thomas" cho biến name để lát nữa bind dữ liệu
-        context.setVariable("name", "Thomas");
-// Trả về chuỗi là html string sau khi thực hiện bind dữ liệu
+        context.setVariable("to", "Baeldung.com");
+
         String html = templateEngine.process("MagicPostOrderTemplate", context);
 
-        OutputStream outputStream = new FileOutputStream("D:\\QRImg\\message.pdf");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(html);
         renderer.layout();
         renderer.createPDF(outputStream);
-        outputStream.close();
+        renderer.finishPDF();
+        return new ByteArrayInputStream(outputStream.toByteArray());
+
     }
 
 
+    public void exportPdfFinal2() throws IOException {
+        File inputHTML = new File("C:\\magic-post-be\\src\\main\\resources\\MagicPostOrderTemplate.html");
+        org.jsoup.nodes.Document document = Jsoup.parse(inputHTML, "UTF-8");
+        document.outputSettings()
+                .syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+
+        try (OutputStream os = new FileOutputStream("D:\\QRImg\\message.pdf")) {
+            String baseUri = FileSystems.getDefault()
+                    .getPath("src/main/resources/")
+                    .toUri()
+                    .toString();
+            PdfRendererBuilder builder = new PdfRendererBuilder();
+            builder.withUri("D:\\QRImg\\message.pdf");
+            builder.toStream(os);
+            builder.withW3cDocument(new W3CDom().fromJsoup(document), baseUri);
+            builder.run();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

@@ -15,6 +15,7 @@ import com.kimbactran.magicpostbe.utils.FindPostPointByAddress;
 import com.kimbactran.magicpostbe.utils.GenerateQrCode;
 import com.kimbactran.magicpostbe.utils.PdfHandler;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ByteArrayResource;
@@ -26,6 +27,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -125,7 +128,12 @@ public class OrderServiceImpl implements OrderService {
         return export(workbook, String.valueOf(orderInfo.getId()));
     }
 
+    @Override
     public ResponseEntity<?> exportPdfOrderEx() throws Exception {
+        return null;
+    }
+
+    public void exportPdfOrderEx(HttpServletResponse response) throws Exception {
 //        generateQrCode.generateQrCodeExample();
 //        String imgPath = "D:\\QRImg\\" + "example.png";
 //        XSSFWorkbook workbook = excelHandler.exportExcelOrderEx(imgPath);
@@ -133,10 +141,10 @@ public class OrderServiceImpl implements OrderService {
 //        pdfHandler.exportToPdf();
 
 //        pdfHandler.convertExcelToPdfV2();
-        pdfHandler.exportPdfFinal();
-//        pdfHandler.exportPdfFinal();
-//        return export(workbook, "example");
-        return ResponseEntity.ok("Success");
+        ByteArrayInputStream byteArrayInputStream = pdfHandler.exportPdfFinal();
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=file.pdf");
+        IOUtils.copy(byteArrayInputStream, response.getOutputStream());
     }
 
     private OrderExportExcelDao convertToDao(OrderInfo orderInfo) {
