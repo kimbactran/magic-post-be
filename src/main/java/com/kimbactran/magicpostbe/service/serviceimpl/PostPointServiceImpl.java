@@ -2,7 +2,7 @@ package com.kimbactran.magicpostbe.service.serviceimpl;
 
 import com.kimbactran.magicpostbe.dto.PostPointDto;
 import com.kimbactran.magicpostbe.dto.PostPointPageResponse;
-import com.kimbactran.magicpostbe.entity.PointType;
+import com.kimbactran.magicpostbe.entity.enumtype.PointType;
 import com.kimbactran.magicpostbe.entity.PostPoint;
 import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.repository.PostPointRepository;

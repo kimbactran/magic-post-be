@@ -2,7 +2,7 @@ package com.kimbactran.magicpostbe.service;
 
 import com.kimbactran.magicpostbe.dto.*;
 import com.kimbactran.magicpostbe.entity.User;
-import com.kimbactran.magicpostbe.entity.UserRole;
+import com.kimbactran.magicpostbe.entity.enumtype.UserRole;
 
 import java.util.List;
 

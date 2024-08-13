@@ -1,7 +1,7 @@
 package com.kimbactran.magicpostbe.repository;
 
 import com.kimbactran.magicpostbe.entity.OrderInfo;
-import com.kimbactran.magicpostbe.entity.OrderStatus;
+import com.kimbactran.magicpostbe.entity.enumtype.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

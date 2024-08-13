@@ -42,12 +42,12 @@ table-layout:fixed;width:100%;'>
 
  </tr>
  <tr  style='mso-height-source:userset;'>
-<td colspan='5' style='border-right:2px solid #000000;border-left: 2px solid #000000; border-top: 2px solid #000000;
+<td colspan='5' style='border-right:2px solid #000000;border-left: 2px solid #000000; border-top: 2px solid #000000; font-weight: bold;
 ' >
  1. Họ tên địa chỉ người gửi:
 <!-- <span th:text="${to}"></span>-->
 </td>
-<td colspan='5' style='border-right:2px solid #000000; border-top: 2px solid #000000; '>2. Họ tên địa chỉ người nhận: </td>
+<td colspan='5' style='border-right:2px solid #000000; border-top: 2px solid #000000; font-weight: bold;'>2. Họ tên địa chỉ người nhận: </td>
  </tr>
  <tr  style='mso-height-source:userset;'>
 <td colspan='5'  style='border-right:2px solid #000000; border-left:2px solid #000000;'>[[${senderName}]]</td>
@@ -72,9 +72,9 @@ table-layout:fixed;width:100%;'>
 <td  colspan="3" style="border-right:2px solid #000000; border-bottom:2px solid #000000;">Mã bưu chính: [[${transactionPointReceiver}]]</td>
  </tr>
  <tr style='mso-height-source:userset;height:15.75pt'>
-<td colspan='5' style='border-right:2px solid #000000; border-left:2px solid #000000;'>3. Loại hàng gửi:&nbsp;</td>
-<td colspan='3' style='border-right:2px solid #000000;'>9. Cước</td>
-<td colspan='2'  style='mso-ignore:colspan;border-right:2px solid #000000;'>10. Khối lượng (kg):</td>
+<td colspan='5' style='border-right:2px solid #000000; border-left:2px solid #000000; font-weight: bold;'>3. Loại hàng gửi:&nbsp;</td>
+<td colspan='3' style='border-right:2px solid #000000; font-weight: bold;'>9. Cước</td>
+<td colspan='2'  style='mso-ignore:colspan;border-right:2px solid #000000; font-weight: bold;'>10. Khối lượng (kg):</td>
  </tr>
  <tr  style='mso-height-source:userset;'>
 <td  colspan="2" align="center" style="border-left:2px solid #000000;">
@@ -91,7 +91,7 @@ table-layout:fixed;width:100%;'>
   <td  colspan='2' style="border-right:2px solid #000000;">Khối lượng thực tế:&nbsp;[[${orderWeight}]]</td>
  </tr>
  <tr  style='mso-height-source:userset;'>
-<td colspan='5'   style='border-right:2px solid #000000;border-left:2px solid #000000;  border-bottom:1px solid #000000;'>4. Nội dung trị giá bưu gửi</td>
+<td colspan='5'   style='border-right:2px solid #000000;border-left:2px solid #000000;  border-bottom:1px solid #000000; font-weight: bold;'>4. Nội dung trị giá bưu gửi</td>
 <td colspan='2' >b. Phụ phí:&nbsp;[[${surCharge}]]</td>
   <td align='right' style="border-right:2px solid #000000;"></td>
   <td  colspan="2" style="border-right:2px solid #000000;border-bottom:2px solid #000000;">Khối lượng quy đổi: [[${orderWeightConverted}]]</td>
@@ -106,16 +106,17 @@ table-layout:fixed;width:100%;'>
   <td colspan='2'  style='mso-ignore:colspan;'>c. Cước GTGT: [[${feeGtgt}]]</td>
   <td align='right' style="border-right:2px solid #000000;"></td>
 
-<td colspan='2'  style='border-right:2px solid #000000;'>12. Chú dẫn nghiệp vụ: </td>
+<td colspan='2'  style='border-right:2px solid #000000; font-weight: bold;'>12. Chú dẫn nghiệp vụ: </td>
  </tr>
  <tr  style='mso-height-source:userset;height:15.75pt'>
 <td colspan='5'  style=' border-left:2px solid #000000; border-right:2px solid #000000; border-bottom:2px solid #000000;'>Tổng</td>
 <td colspan='2' >d. Tổng cước (gồm VAT): [[${totalCharge}]]</td>
   <td align='right' style="border-right:2px solid #000000; "></td>
-<td colspan='2' rowspan='7' class='x56'  style='border-right:2px solid #000000;border-bottom:2px solid #000000;'>[[${instruction}]]</td>
+<td colspan='2' rowspan='7' class='x56'  style='border-right:2px solid #000000;border-bottom:2px solid #000000; align-items: start; vertical-align: top;
+          white-space: pre-wrap;'>[[${instruction}]]</td>
  </tr>
  <tr  style='mso-height-source:userset;'>
-<td colspan='5' class='x27' style='border-right:2px solid #000000;; border-left:2px solid #000000'>5. Dịch vụ đặc biệt/ Cộng thêm</td>
+<td colspan='5' class='x27' style='border-right:2px solid #000000;; border-left:2px solid #000000; font-weight: bold;'>5. Dịch vụ đặc biệt/ Cộng thêm</td>
 <td colspan='2' >e. Thu khác: [[${otherFee}]]</td>
   <td align='right' style="border-right:2px solid #000000;"></td>
  </tr>
@@ -126,7 +127,7 @@ table-layout:fixed;width:100%;'>
  </tr>
  <tr style='mso-height-source:userset;'>
 <td colspan='5' style='border-right:2px solid #000000;border-bottom:1px dotted #000000; border-left:2px solid #000000'></td>
-<td colspan='3'  style='border-right:2px solid #000000;'>11. Thu của người nhận</td>
+<td colspan='3'  style='border-right:2px solid #000000; font-weight: bold;'>11. Thu của người nhận</td>
   <td colspan='2' ></td>
 
  </tr>
@@ -137,7 +138,7 @@ table-layout:fixed;width:100%;'>
   <td  align='right' style="border-right:2px solid #000000;"></td>
  </tr>
  <tr style='mso-height-source:userset;height:15.75pt'>
-<td colspan='5' style='border-right:2px solid #000000;border-left:2px solid #000000'>6. Chỉ dẫn của người gửi khi không phát được bưu gửi</td>
+<td colspan='5' style='border-right:2px solid #000000;border-left:2px solid #000000; font-weight: bold;'>6. Chỉ dẫn của người gửi khi không phát được bưu gửi</td>
 <td >Thu khác:&nbsp;[[${otherFeeFromReceiver}]]</td>
 <td ></td>
   <td  align='right' style="border-right:2px solid #000000; "></td>
@@ -164,8 +165,8 @@ table-layout:fixed;width:100%;'>
                                    th:checked="${isAction4}">
  <label >Chuyển hoàn trước ngày</label></td>
 
-  <td colspan='3'  style='border-right:2px solid #000000;'>13. Bưu cục chấp nhận</td>
-<td colspan='2'  style='border-right:2px solid #000000;'>14. Ngày giờ nhận</td>
+  <td colspan='3'  style='border-right:2px solid #000000;font-weight: bold;'>13. Bưu cục chấp nhận</td>
+<td colspan='2'  style='border-right:2px solid #000000; font-weight: bold;'>14. Ngày giờ nhận</td>
  </tr>
  <tr  style='mso-height-source:userset;'>
 <td colspan='5'  style='border-bottom:2px solid #000000; border-left:2px solid #000000; border-right: 2px solid #000000' align="center"><input type="checkbox" th:checked="${isAction5}">
@@ -174,19 +175,21 @@ table-layout:fixed;width:100%;'>
 <td colspan='2' style='border-right:2px solid #000000;'>....h..../....../...../20.....</td>
  </tr>
  <tr  style='mso-height-source:userset;'>
-<td colspan='5'  style='border-right:2px solid #000000;border-left:2px solid #000000;'>7. Cam kết của người gửi:</td>
+<td colspan='5'  style='border-right:2px solid #000000;border-left:2px solid #000000; font-weight: bold;'>7. Cam kết của người gửi:</td>
 <td colspan='3' style='border-right:2px solid #000000;'></td>
-  <td colspan='2' style='border-right:2px solid #000000;' align="center">Người nhận/ Người được ủy quyền nhận<br></br>(Ký, ghi rõ họ tên)</td>
+  <td colspan='2'  style='mso-ignore:colspan;border-right:2px solid #000000;'></td>
+
 
  </tr>
  <tr style='mso-height-source:userset;'>
 <td colspan='5' style='border-right:2px solid #000000;border-left:2px solid #000000; border-bottom:2px solid #000000;'>Tôi chấp nhận các điều khoản tại mặt sau phiếu gửi và cam đoan bưu gửi này không chứa những mặt hàng nguy hiểm, cấm gửi. Trường hợp không phát được hãy thực hiện chỉ dẫn tại mục 6, tôi sẽ trả cước chuyển hoàn.</td>
 <td colspan='3' style='border-right:2px solid #000000;'></td>
-  <td colspan='2'  style='mso-ignore:colspan;border-right:2px solid #000000;'></td>
+  <td colspan='2' style='border-right:2px solid #000000;' align="center">Người nhận/ Người được ủy quyền nhận<br></br>(Ký, ghi rõ họ tên)</td>
+
 
  </tr>
  <tr style='mso-height-source:userset;'>
-<td  colspan="2" style=' border-left:2px solid #000000;'>8. Ngày giờ gửi:&nbsp;</td>
+<td  colspan="2" style=' border-left:2px solid #000000; font-weight: bold;'>8. Ngày giờ gửi:&nbsp;</td>
 <td colspan='3'  style='border-right:2px solid #000000;'>Chữ ký người gửi</td>
 <td colspan='3'  style='mso-ignore:colspan;border-right:2px solid #000000;'></td>
 <td colspan='2'  style='mso-ignore:colspan;border-right:2px solid #000000;'></td>

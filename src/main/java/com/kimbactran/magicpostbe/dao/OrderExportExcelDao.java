@@ -1,9 +1,9 @@
 package com.kimbactran.magicpostbe.dao;
 
-import com.kimbactran.magicpostbe.entity.*;
+import com.kimbactran.magicpostbe.entity.enumtype.OrderType;
+import com.kimbactran.magicpostbe.entity.enumtype.SenderInstructions;
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.util.Date;
 
 @Data

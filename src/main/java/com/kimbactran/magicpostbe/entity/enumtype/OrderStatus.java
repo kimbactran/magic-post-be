@@ -1,4 +1,4 @@
-package com.kimbactran.magicpostbe.entity;
+package com.kimbactran.magicpostbe.entity.enumtype;
 
 public enum OrderStatus {
     ORDER_00,

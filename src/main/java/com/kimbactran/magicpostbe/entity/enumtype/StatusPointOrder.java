@@ -1,4 +1,4 @@
-package com.kimbactran.magicpostbe.entity;
+package com.kimbactran.magicpostbe.entity.enumtype;
 
 public enum StatusPointOrder {
     S1, S2, S3

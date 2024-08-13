@@ -5,7 +5,7 @@ import com.kimbactran.magicpostbe.dto.SignUpRequest;
 import com.kimbactran.magicpostbe.entity.Customer;
 import com.kimbactran.magicpostbe.entity.PostPoint;
 import com.kimbactran.magicpostbe.entity.Sender;
-import com.kimbactran.magicpostbe.entity.UserRole;
+import com.kimbactran.magicpostbe.entity.enumtype.UserRole;
 import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.repository.CustomerRepository;
 import com.kimbactran.magicpostbe.repository.PostPointRepository;

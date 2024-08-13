@@ -1,5 +1,6 @@
 package com.kimbactran.magicpostbe.entity;
 
+import com.kimbactran.magicpostbe.entity.enumtype.PointType;
 import lombok.Data;
 
 import javax.persistence.*;

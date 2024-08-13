@@ -1,6 +1,6 @@
 package com.kimbactran.magicpostbe.dto;
 
-import com.kimbactran.magicpostbe.entity.PointType;
+import com.kimbactran.magicpostbe.entity.enumtype.PointType;
 import lombok.Data;
 
 @Data

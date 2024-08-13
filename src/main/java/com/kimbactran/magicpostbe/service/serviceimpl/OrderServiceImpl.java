@@ -1,11 +1,11 @@
 package com.kimbactran.magicpostbe.service.serviceimpl;
 
 import com.google.zxing.WriterException;
-import com.itextpdf.text.DocumentException;
 import com.kimbactran.magicpostbe.dao.OrderExportExcelDao;
-import com.kimbactran.magicpostbe.dto.OderRequest;
-import com.kimbactran.magicpostbe.dto.Response;
+import com.kimbactran.magicpostbe.dto.OrderRequest;
 import com.kimbactran.magicpostbe.entity.*;
+import com.kimbactran.magicpostbe.entity.enumtype.OrderStatus;
+import com.kimbactran.magicpostbe.entity.enumtype.StatusPointOrder;
 import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.mapper.MappingHelper;
 import com.kimbactran.magicpostbe.repository.*;
@@ -16,7 +16,6 @@ import com.kimbactran.magicpostbe.utils.GenerateQrCode;
 import com.kimbactran.magicpostbe.utils.PdfHandler;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -50,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
     private final PdfHandler pdfHandler;
 
 
-    public OrderInfo createOrder(OderRequest orderRequest) {
+    public OrderInfo createOrder(OrderRequest orderRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         User currentUser = userRepository.findByEmail(email).orElse(null);
@@ -144,6 +143,14 @@ public class OrderServiceImpl implements OrderService {
         ByteArrayInputStream byteArrayInputStream = pdfHandler.exportPdfFinal();
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=file.pdf");
+        IOUtils.copy(byteArrayInputStream, response.getOutputStream());
+    }
+
+    public void getOrderPdf(HttpServletResponse response) throws Exception {
+        ByteArrayInputStream byteArrayInputStream = pdfHandler.exportPdfFinal();
+        response.setContentType("application/octet-stream");
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("Content-Disposition", "attachment; filename=file2.pdf");
         IOUtils.copy(byteArrayInputStream, response.getOutputStream());
     }
 

@@ -1,20 +1,15 @@
 package com.kimbactran.magicpostbe.service.serviceimpl;
 
-import com.kimbactran.magicpostbe.dto.UserDto;
-import com.kimbactran.magicpostbe.entity.PostPoint;
 import com.kimbactran.magicpostbe.entity.User;
-import com.kimbactran.magicpostbe.entity.UserRole;
+import com.kimbactran.magicpostbe.entity.enumtype.UserRole;
 import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.repository.PostPointRepository;
 import com.kimbactran.magicpostbe.repository.UserRepository;
-import com.kimbactran.magicpostbe.service.PostPointService;
 import com.kimbactran.magicpostbe.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -56,7 +56,7 @@ public class PdfHandler {
     public byte[] convertHtmlToPdf(String html) throws Exception {
         byte[] pdfBytes = null;
         try {
-            File fontFile = new File("C:\\magic-post-be\\src\\main\\resources\\font\\vuTimesBold.ttf");
+            File fontFile = new File("C:\\magic-post-be\\src\\main\\resources\\font\\vuTimes.ttf");
             ConverterProperties converterProperties = new ConverterProperties();
             FontProvider fontProvider = new FontProvider();
             fontProvider.getFontSet().addFont(fontFile.getAbsolutePath());

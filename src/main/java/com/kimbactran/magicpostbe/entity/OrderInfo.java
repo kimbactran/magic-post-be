@@ -1,5 +1,6 @@
 package com.kimbactran.magicpostbe.entity;
 
+import com.kimbactran.magicpostbe.entity.enumtype.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

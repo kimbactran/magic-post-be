@@ -1,9 +1,7 @@
 package com.kimbactran.magicpostbe.entity;
 
-import lombok.AllArgsConstructor;
+import com.kimbactran.magicpostbe.entity.enumtype.UserRole;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

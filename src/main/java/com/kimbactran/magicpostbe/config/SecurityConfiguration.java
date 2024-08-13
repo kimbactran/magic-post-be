@@ -1,6 +1,6 @@
 package com.kimbactran.magicpostbe.config;
 
-import com.kimbactran.magicpostbe.entity.UserRole;
+import com.kimbactran.magicpostbe.entity.enumtype.UserRole;
 import com.kimbactran.magicpostbe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

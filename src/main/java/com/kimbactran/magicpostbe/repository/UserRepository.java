@@ -1,10 +1,8 @@
 package com.kimbactran.magicpostbe.repository;
 
 import com.kimbactran.magicpostbe.entity.User;
-import com.kimbactran.magicpostbe.entity.UserRole;
+import com.kimbactran.magicpostbe.entity.enumtype.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

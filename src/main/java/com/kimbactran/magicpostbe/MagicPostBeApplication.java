@@ -1,7 +1,7 @@
 package com.kimbactran.magicpostbe;
 
 import com.kimbactran.magicpostbe.entity.User;
-import com.kimbactran.magicpostbe.entity.UserRole;
+import com.kimbactran.magicpostbe.entity.enumtype.UserRole;
 import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

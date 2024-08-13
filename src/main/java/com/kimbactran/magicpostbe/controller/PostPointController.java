@@ -1,7 +1,7 @@
 package com.kimbactran.magicpostbe.controller;
 
 import com.kimbactran.magicpostbe.dto.PostPointDto;
-import com.kimbactran.magicpostbe.entity.PointType;
+import com.kimbactran.magicpostbe.entity.enumtype.PointType;
 import com.kimbactran.magicpostbe.entity.PostPoint;
 import com.kimbactran.magicpostbe.service.PostPointService;
 import com.kimbactran.magicpostbe.utils.AppConstants;

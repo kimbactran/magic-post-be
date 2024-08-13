@@ -1,6 +1,6 @@
 package com.kimbactran.magicpostbe.repository;
 
-import com.kimbactran.magicpostbe.entity.PointType;
+import com.kimbactran.magicpostbe.entity.enumtype.PointType;
 import com.kimbactran.magicpostbe.entity.PostPoint;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

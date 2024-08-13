@@ -1,6 +1,6 @@
 package com.kimbactran.magicpostbe.utils;
 
-import com.kimbactran.magicpostbe.entity.PointType;
+import com.kimbactran.magicpostbe.entity.enumtype.PointType;
 import com.kimbactran.magicpostbe.entity.PostPoint;
 import com.kimbactran.magicpostbe.repository.PostPointRepository;
 import org.springframework.stereotype.Component;

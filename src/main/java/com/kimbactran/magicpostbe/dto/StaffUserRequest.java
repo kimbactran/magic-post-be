@@ -1,6 +1,6 @@
 package com.kimbactran.magicpostbe.dto;
 
-import com.kimbactran.magicpostbe.entity.UserRole;
+import com.kimbactran.magicpostbe.entity.enumtype.UserRole;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 

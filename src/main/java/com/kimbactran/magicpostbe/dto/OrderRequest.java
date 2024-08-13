@@ -1,16 +1,13 @@
 package com.kimbactran.magicpostbe.dto;
 
-import com.kimbactran.magicpostbe.entity.OrderInfo;
-import com.kimbactran.magicpostbe.entity.OrderStatus;
-import com.kimbactran.magicpostbe.entity.OrderType;
-import com.kimbactran.magicpostbe.entity.UserPayment;
+import com.kimbactran.magicpostbe.entity.enumtype.OrderType;
+import com.kimbactran.magicpostbe.entity.enumtype.UserPayment;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Date;
 @Data
 @RequiredArgsConstructor
-public class OderRequest {
+public class OrderRequest {
 
     private Long orderCustomerId;
 

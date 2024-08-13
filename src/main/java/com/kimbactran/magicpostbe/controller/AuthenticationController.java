@@ -2,7 +2,7 @@ package com.kimbactran.magicpostbe.controller;
 
 import com.kimbactran.magicpostbe.dto.*;
 import com.kimbactran.magicpostbe.entity.User;
-import com.kimbactran.magicpostbe.entity.UserRole;
+import com.kimbactran.magicpostbe.entity.enumtype.UserRole;
 import com.kimbactran.magicpostbe.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
