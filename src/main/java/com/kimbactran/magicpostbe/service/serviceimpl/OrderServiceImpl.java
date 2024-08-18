@@ -10,10 +10,7 @@ import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.mapper.MappingHelper;
 import com.kimbactran.magicpostbe.repository.*;
 import com.kimbactran.magicpostbe.service.OrderService;
-import com.kimbactran.magicpostbe.utils.ExcelHandler;
-import com.kimbactran.magicpostbe.utils.FindPostPointByAddress;
-import com.kimbactran.magicpostbe.utils.GenerateQrCode;
-import com.kimbactran.magicpostbe.utils.PdfHandler;
+import com.kimbactran.magicpostbe.utils.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -47,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
     private final MappingHelper mappingHelper;
     private final ExcelHandler excelHandler;
     private final PdfHandler pdfHandler;
+    private final AuthenticationFunction authenticationFunction;
 
 
     public OrderInfo createOrder(OrderRequest orderRequest) {
@@ -197,5 +195,32 @@ public class OrderServiceImpl implements OrderService {
             header.setAccessControlExposeHeaders(allows);
             return ResponseEntity.ok("Success");
         }
+    }
+
+    public OrderInfo updateOrderInfo(OrderRequest orderRequest, Long orderId) {
+        User currentUser = authenticationFunction.getUserLogin();
+        OrderInfo orderInfo = orderRepository.findById(orderId).orElseThrow(() -> new AppException("Order not found"));
+        User createUser = userRepository.findById(orderInfo.getCreateUser()).orElseThrow(() -> new AppException("User not found"));
+        if(currentUser.getRole().equals(createUser.getRole()) && currentUser.getPostPointId().equals(createUser.getPostPointId())) {
+            orderInfo.setOrderType(orderRequest.getOrderType());
+            orderInfo.setOrderValue(orderRequest.getOrderValue());
+            orderInfo.setAdditionalService(orderRequest.getAdditionalService());
+            orderInfo.setOrderStatus(OrderStatus.ORDER_00);
+            orderInfo.setOrderWeight(orderRequest.getOrderWeight());
+            orderInfo.setUserPayment(orderRequest.getUserPayment());
+            orderInfo.setOrderDescription(orderRequest.getOrderDescription());
+            orderInfo.setMainCharge(orderRequest.getMainCharge());
+            orderInfo.setSurCharge(orderRequest.getSurCharge());
+            orderInfo.setTotalCharge(orderRequest.getTotalCharge());
+            return orderRepository.save(orderInfo);
+        } else throw new AppException("User not authorized to update this order");
+    }
+
+    public void deleteOrder(Long orderId) {
+        User currentUser = authenticationFunction.getUserLogin();
+        OrderInfo orderInfo = orderRepository.findById(orderId).orElseThrow(() -> new AppException("Order not found"));
+        if(currentUser.getId().equals(orderInfo.getCreateUser())){
+            orderRepository.delete(orderInfo);
+        } else throw new AppException("User not authorized to delete this order");
     }
 }

@@ -7,6 +7,8 @@ import com.kimbactran.magicpostbe.exception.AppException;
 import com.kimbactran.magicpostbe.repository.PostPointRepository;
 import com.kimbactran.magicpostbe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -44,5 +46,11 @@ public class AuthenticationFunction {
         PostPoint postPoint = postPointRepository.findById(signUpRequest.getPostPointId()).orElseThrow(() -> AppException.notFound("Post Point not found"));
         user.setPostPointId(signUpRequest.getPostPointId());
         return userRepository.save(user);
+    }
+
+    public User getUserLogin(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserEmail = authentication.getName();
+        return userRepository.findByEmail(currentUserEmail).orElseThrow(() -> AppException.notFound("User not found"));
     }
 }

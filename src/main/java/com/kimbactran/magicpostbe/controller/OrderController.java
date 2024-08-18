@@ -1,7 +1,6 @@
 package com.kimbactran.magicpostbe.controller;
 
 import com.google.zxing.WriterException;
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
@@ -50,4 +49,8 @@ public class OrderController {
         return orderService.createOrder(orderRequest);
     }
 
+    @PostMapping("/update/{orderId}")
+    public OrderInfo updateOrder(@RequestBody OrderRequest orderRequest, @PathVariable Long orderId) throws Exception {
+        return orderService.updateOrderInfo(orderRequest, orderId);
+    }
 }

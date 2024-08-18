@@ -20,4 +20,5 @@ public interface OrderService {
     ResponseEntity<?> exportPdfOrderEx() throws Exception;
     void exportPdfOrderEx(HttpServletResponse response) throws Exception;
     void getOrderPdf(HttpServletResponse response) throws Exception;
+    OrderInfo updateOrderInfo(OrderRequest orderRequest, Long orderId);
 }
