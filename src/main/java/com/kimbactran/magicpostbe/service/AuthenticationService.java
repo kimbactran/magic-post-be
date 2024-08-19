@@ -13,4 +13,5 @@ public interface AuthenticationService {
     void deleteUser(Long userId);
     JwtAuthenticationResponse login(SignInRequest signInRequest);
     JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+    User getCurrentUser();
 }

@@ -48,4 +48,9 @@ public class AuthenticationController {
         authenticationService.deleteUser(userId);
         return ResponseEntity.ok("Delete User Successfully!");
     }
+
+    @GetMapping("/getCurrentUser")
+    public ResponseEntity<User> getCurrentUser() {
+        return ResponseEntity.ok(authenticationService.getCurrentUser());
+    }
 }

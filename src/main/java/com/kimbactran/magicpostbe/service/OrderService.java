@@ -2,6 +2,7 @@ package com.kimbactran.magicpostbe.service;
 
 import com.google.zxing.WriterException;
 import com.kimbactran.magicpostbe.dto.OrderRequest;
+import com.kimbactran.magicpostbe.dto.ReceiverRequest;
 import com.kimbactran.magicpostbe.entity.OrderInfo;
 import com.kimbactran.magicpostbe.entity.enumtype.OrderStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,4 +22,6 @@ public interface OrderService {
     void exportPdfOrderEx(HttpServletResponse response) throws Exception;
     void getOrderPdf(HttpServletResponse response) throws Exception;
     OrderInfo updateOrderInfo(OrderRequest orderRequest, Long orderId);
+    void deleteOrder(Long orderId);
+    OrderInfo changeReceiver(ReceiverRequest receiverRequest, Long orderId);
 }

@@ -3,6 +3,7 @@ package com.kimbactran.magicpostbe.service.serviceimpl;
 import com.google.zxing.WriterException;
 import com.kimbactran.magicpostbe.dao.OrderExportExcelDao;
 import com.kimbactran.magicpostbe.dto.OrderRequest;
+import com.kimbactran.magicpostbe.dto.ReceiverRequest;
 import com.kimbactran.magicpostbe.entity.*;
 import com.kimbactran.magicpostbe.entity.enumtype.OrderStatus;
 import com.kimbactran.magicpostbe.entity.enumtype.StatusPointOrder;
@@ -62,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
         orderInfo.setUserSendId(sender.getSenderId());
 
         if(receiverRepository.existsByPhone(orderRequest.getPhoneReceiver())){
-            Receiver receiver = receiverRepository.findByPhone(orderRequest.getPhoneReceiver());
+            Receiver receiver = receiverRepository.findByPhone(orderRequest.getPhoneReceiver()).orElseThrow(() -> AppException.badRequest("Receiver not found"));
             orderInfo.setUserReceiverId(receiver.getReceiverId());
         } else {
             Receiver receiver = new Receiver();
@@ -205,8 +206,6 @@ public class OrderServiceImpl implements OrderService {
             orderInfo.setOrderType(orderRequest.getOrderType());
             orderInfo.setOrderValue(orderRequest.getOrderValue());
             orderInfo.setAdditionalService(orderRequest.getAdditionalService());
-            orderInfo.setOrderStatus(OrderStatus.ORDER_00);
-            orderInfo.setOrderWeight(orderRequest.getOrderWeight());
             orderInfo.setUserPayment(orderRequest.getUserPayment());
             orderInfo.setOrderDescription(orderRequest.getOrderDescription());
             orderInfo.setMainCharge(orderRequest.getMainCharge());
@@ -216,6 +215,19 @@ public class OrderServiceImpl implements OrderService {
         } else throw new AppException("User not authorized to update this order");
     }
 
+    public OrderInfo changeReceiver(ReceiverRequest receiverRequest, Long orderId) {
+        OrderInfo orderInfo = orderRepository.findById(orderId).orElseThrow(() -> new AppException("Order not found"));
+        Receiver savedReceiver = new Receiver();
+        Receiver receiver = new Receiver();
+        if(receiverRepository.existsByPhone(receiverRequest.getPhone())) {
+            receiver = receiverRepository.findByPhone(receiverRequest.getPhone()).orElseThrow(() -> new AppException("Receiver not found"));
+        }
+        savedReceiver = setReceiver(receiver, receiverRequest);
+        orderInfo.setUserReceiverId(savedReceiver.getReceiverId());
+
+        return orderRepository.save(orderInfo);
+    }
+
     public void deleteOrder(Long orderId) {
         User currentUser = authenticationFunction.getUserLogin();
         OrderInfo orderInfo = orderRepository.findById(orderId).orElseThrow(() -> new AppException("Order not found"));
@@ -223,4 +235,21 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.delete(orderInfo);
         } else throw new AppException("User not authorized to delete this order");
     }
+
+    public Receiver setReceiver(Receiver receiver, ReceiverRequest receiverRequest) {
+        receiver.setPhone(receiverRequest.getPhone());
+        receiver.setFirstName(receiverRequest.getFirstName());
+        receiver.setLastName(receiverRequest.getLastName());
+        receiver.setReceiverCountry(receiverRequest.getReceiverCountry());
+        receiver.setReceiverProvince(receiverRequest.getReceiverProvince());
+        receiver.setReceiverDistrict(receiverRequest.getReceiverDistrict());
+        receiver.setReceiverCommune(receiverRequest.getReceiverCommune());
+        receiver.setReceiverDetailAddress(receiverRequest.getReceiverDetailAddress());
+        PostPoint postPoint = postPointRepository.findPostPointByAddress(receiverRequest.getReceiverCommune(), receiverRequest.getReceiverDistrict(),
+                receiverRequest.getReceiverProvince(), receiverRequest.getReceiverCountry()).orElseThrow(() -> new AppException("PostPoint not found"));
+        receiver.setPointCode(postPoint.getPointCode());
+        return receiverRepository.save(receiver);
+    }
+
+
 }

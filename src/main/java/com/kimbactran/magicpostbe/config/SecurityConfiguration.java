@@ -28,7 +28,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.antMatchers("/api/v1/auth/**", "/api/v1/order/**")
+                .authorizeHttpRequests(request -> request.antMatchers("/api/v1/auth/**", "/api/v1/order/**", "/swagger-ui.html")
                         .permitAll()
                         .antMatchers("/api/v1/admin", "/api/v1/postPoint").hasAnyAuthority(UserRole.ADMIN.name())
                         .anyRequest().authenticated()
@@ -57,4 +57,5 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
 }

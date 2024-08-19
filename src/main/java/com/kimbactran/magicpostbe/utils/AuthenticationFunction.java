@@ -50,7 +50,7 @@ public class AuthenticationFunction {
 
     public User getUserLogin(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserEmail = authentication.getName();
+        String currentUserEmail = ( (User) authentication.getPrincipal() ).getEmail();
         return userRepository.findByEmail(currentUserEmail).orElseThrow(() -> AppException.notFound("User not found"));
     }
 }

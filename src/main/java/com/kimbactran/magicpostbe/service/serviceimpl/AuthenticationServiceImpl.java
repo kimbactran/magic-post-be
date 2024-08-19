@@ -89,4 +89,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userRepository.deleteById(userId);
     }
 
+    public User getCurrentUser(){
+        return authenticationFunction.getUserLogin();
+    }
+
 }
